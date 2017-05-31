@@ -7,20 +7,19 @@ var player = 1; //consider changing this to 0/1
 var score = [0, 0]
 var highlightLocation;
 var displayScore = 0;
-
+//const
 const numOfCols=6;  
 const numOfRows=6; 
 const numberOfTiles = playerTiles[0].length;
-
-
+//gameboard!
 var gameBoard = document.getElementById("gameBoard");
-
+//constructor function for the computer-player logic
 function HighestTile(tileValue, location, score) {
   this.tileValue = tileValue;
   this.location  = location;
   this.score     = score;
 }
-
+//global variables for the computer logic
 var tempTile = new HighestTile(0, "xx", 0);
 var highTile = new HighestTile(0, "xx", -10);
 
@@ -28,34 +27,30 @@ var highTile = new HighestTile(0, "xx", -10);
 
 function randomizeTiles() {
   for (var i = 0; i < 2; i++) {
-    for (var j = 0; j < 6; j++) {
+    for (var j = 0; j < numberOfTiles; j++) {
       playerTiles[i][j] = Math.floor(Math.random() * 8) + 1; 
     }
   }
 }
-
-function makeBoard() {
+//I believe I did rows and columns backwards when I assigned them attributes
+function makeBoard() { 
   for (var i=0; i < numOfRows; i++) {
-     var row = gameBoard.appendChild(document.createElement("div"));
-      for (var j=0; j < numOfCols; j++) {
+    var row = gameBoard.appendChild(document.createElement("div"));
+    for (var j=0; j < numOfCols; j++) {
         locationByStrVal = i.toString() + j.toString();
-        x = document.createElement("span");
-        x.id = locationByStrVal;
-        x.setAttribute("tile-matrix-value", [i,j]);  //so I can find the dom elements in a way other than id
-        x.value = 0;  //just added as a way to initialize the board's squares to zero
-        row.appendChild(x);
-      }
+        element = document.createElement("span");
+        element.id = locationByStrVal;
+        element.value = 0;  //added as a way to initialize the board's squares to zero
+        row.appendChild(element);
+    }
   }  
 }
   
 function makeTileRow() {
-  //var tileRow = document.getElementById('tile-row'); //this might need to get reset of placing tiles on board
-
   for (var i = 0; i < 2; i++) {
     if (i === 0) {
       var tileRow = document.getElementById('player1-tile-row');
-    }
-    if (i === 1) {
+    } else {
       var tileRow = document.getElementById('player2-tile-row');
     }
     for (j=0; j < 6; j++) {
