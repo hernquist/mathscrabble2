@@ -1,0 +1,135 @@
+body {
+  font-family: impact;
+  background-image: url("dark-textured-background1.jpg");
+  background-size: max;
+  background-repeat: no-repeat;
+  background-color: #cccccc;
+}
+
+h1 {
+  margin: 0 auto;
+  text-align: center;
+  color: grey;
+  font-size: 4em;
+	text-shadow: 3px 3px 5px rgb(200, 255, 150);
+}
+
+main {
+  display: flex;  
+  flex-direction: column;
+  justify-content: center;
+  
+}
+
+.boards {
+  display: flex;
+  flex-flow: row-reverse;
+  justify-content: center;
+}
+
+#gameBoard span{
+    display: inline-block;
+    width: 3em;
+    height: 3em;
+    padding: .5em;
+    margin: 0;
+    color: black;
+    font-size: 1em;
+    line-height: 1em;
+    float: left; /*keeps the tiles from moving around when I add HTML*/
+}
+
+#gameBoard {
+    border: .7em outset silver;
+    clear: both; /*cancelling the float left 
+    in the gameBoard span to insure the rows reset after the last column*/
+}
+
+#gameBoard div:nth-child(even) span:nth-child(even),
+#gameBoard div:nth-child(odd) span:nth-child(odd){
+    background-color: white;
+}
+
+#gameBoard div:nth-child(odd) span:nth-child(even),
+#gameBoard div:nth-child(even) span:nth-child(odd){
+    background-color: black;
+}
+
+.tile-footer {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+
+  /*overflow: auto;*/
+  font-size: 2em;
+  color: black;
+  margin: 0 auto;
+  text-shadow: 2px 2px 3px rgb(200, 255, 150);
+}
+
+.scoreboard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+  margin-right: 1em;
+  border-radius: 1em;
+  /*height: 4em;
+  width: 4em;
+  */
+} 
+
+#player1, #player2 {
+  width: 2em;
+  margin: .3em 0 .3em 0;
+  border-radius: .1em;
+  font-size: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  border: .1em ridge silver;
+  color: rgb(200, 255, 150);
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  text-shadow: 2px 2px 3px white;
+    
+  background-color: rgba(255, 255, 255, .1);
+    /*try digital font*/
+}
+
+#player2-tile-row, #player1-tile-row {
+  display: flex;
+  justify-content: center;
+  margin: 0 .2em 0 -.5em;
+  align-items: center;
+}
+
+.tile {
+  font-size: 1em;
+  height: 1em;
+  width: 1em;
+  text-align: center;
+  border-radius: .2em;
+  /*margin: 0 auto;*/
+  float: left;
+  background-color: rgb(125, 84, 84);
+  margin: .3em;
+  padding: .2em;
+  box-shadow: 4px 4px 6px grey;
+}
+
+.tileOnBoard {
+  font-size: 2em;
+  line-height: max;
+  /*height: 1em;
+  width: 1em;
+  */text-align: center;
+  border-radius: .2em;
+  float: left;
+  text-shadow: 3px 3px 5px rgb(200, 255, 150);
+  background-color: rgb(125, 84, 84);
+  margin: 0 auto;
+  padding: .5em;
+  box-shadow: 4px 4px 6px grey;
+}
+
+.hidden {display:none;}
