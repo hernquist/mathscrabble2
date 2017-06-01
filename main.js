@@ -45,7 +45,8 @@ function makeBoard() {
     }
   }  
 }
-  
+// formatting the elements ids giving them a unique id
+// a little ratchety but it works, 't' refers to player tile 
 function makeTileRow() {
   for (var i = 0; i < 2; i++) {
     if (i === 0) {
@@ -58,13 +59,12 @@ function makeTileRow() {
         tileElement.className = 'tile';
         tileElement.id = "t" + (i.toString() + j.toString()); // so that id reflect player1 or 2
         tileElement.value = playerTiles[i][j];
-        //tileElement.addEventListener('click', pickTile(i, j));
         tileRow.appendChild(tileElement);
         tileElement.innerHTML = playerTiles[i][j];
       }
   }
 }
-
+// score board!!! scores stored in an array
 function makeScoreBoard() {
   document.getElementById("player1").innerHTML = score[0];
   document.getElementById("player2").innerHTML = score[1];
@@ -176,9 +176,7 @@ function checkHorizontal(locus, computerTileValue) {
   }
 }  
 
-function displayWinner(player) {
-  var winner = "player 1";
-  if (player === 2) winner = "the computer";
+function displayWinner(winner) {
   document.getElementById("player1-tile-row").innerHTML = " ";
   document.getElementById("player2-tile-row").innerHTML = "The winner is " + winner;
   } 
@@ -192,10 +190,9 @@ function checkWinner() { //player already set to player = 2;
   if (score[0] === score[1]) {
     displayTie();
   } else if (score[0] > score[1]) {
-    player = 1;
-    displayWinner(player);
+    displayWinner("player 1");
   } else {
-    displayWinner(player);
+    displayWinner("the computer");
   }
 }
 
