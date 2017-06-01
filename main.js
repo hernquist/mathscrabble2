@@ -176,11 +176,9 @@ function checkHorizontal(locus, computerTileValue) {
   }
 }  
 
-
-
 function displayWinner(player) {
   var winner = "player 1";
-  if (player === 1) winner = "the computer";
+  if (player === 2) winner = "the computer";
   document.getElementById("player1-tile-row").innerHTML = " ";
   document.getElementById("player2-tile-row").innerHTML = "The winner is " + winner;
   } 
