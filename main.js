@@ -7,6 +7,7 @@ var player = 1; //consider changing this to 0/1
 var score = [0, 0]
 var highlightLocation;
 var displayScore = 0;
+var tileToBeDeleted = [0, 0];
 //const
 const numOfCols=6;  
 const numOfRows=6; 
@@ -24,7 +25,6 @@ var tempTile = new HighestTile(0, "xx", 0);
 var highTile = new HighestTile(0, "xx", -10);
 
 // functions
-
 function randomizeTiles() {
   for (var i = 0; i < 2; i++) {
     for (var j = 0; j < numberOfTiles; j++) {
@@ -69,51 +69,48 @@ function makeScoreBoard() {
   document.getElementById("player1").innerHTML = score[0];
   document.getElementById("player2").innerHTML = score[1];
 }
-
+//checks column sums for multiples of 5
 function checkVertical(locus, computerTileValue) {
-   var tileSum = 0;
-   
-   var locusChecker = locus;
-   var tempX = parseInt(locusChecker.charAt(1));
-   var tempY = parseInt(locusChecker.charAt(0));
+  var tileSum = 0;
+  var locusChecker = locus;
+  var tempX = parseInt(locusChecker.charAt(1));
+  var tempY = parseInt(locusChecker.charAt(0));
+  //human player
+  var val = document.getElementById(locusChecker).value;
+  //computer checking  
+  if (player === 2 ) val = computerTileValue;
 
-   var val = document.getElementById(locusChecker).value;  //jQuery $("[attribute=value]") 
-   if (player === 2 ) val = computerTileValue;
-   tileSum += val;
+  tileSum += val;
+  //going "up"
+  do { 
+    if (tempY === 0) break;
+    tempY--;
+    locusChecker = tempY.toString() + tempX.toString();
+    val = document.getElementById(locusChecker).value;
+    tileSum = tileSum + val;
+  }  while (val !== 0 );
 
-   do { //goingDown
-      if (tempY === 0) {
-        break;
-      } else {
-        tempY--;
-      }
-      locusChecker = tempY.toString() + tempX.toString();
-      val = document.getElementById(locusChecker).value;
-      tileSum = tileSum + val;
-   }  while (val !== 0 );
-
-   locusChecker = locus; //reseting so I can check in the other direction
-   tempX = parseInt(locusChecker.charAt(1));
-   tempY = parseInt(locusChecker.charAt(0));
-   do { //goingUp
-      if (tempY === (numOfRows - 1)) {
-        break;
-      } else {
-        tempY++;
-      }
-      locusChecker = tempY.toString() + tempX.toString();
-      val = document.getElementById(locusChecker).value;
-      tileSum = tileSum + val;
-   }  while (val !== 0);
-  
+  //reseting so I can check in the other direction
+  locusChecker = locus; 
+  tempX = parseInt(locusChecker.charAt(1));
+  tempY = parseInt(locusChecker.charAt(0));
+  //going "down"
+  do { 
+    if (tempY === (numOfRows - 1)) break;
+    tempY++;
+    locusChecker = tempY.toString() + tempX.toString();
+    val = document.getElementById(locusChecker).value;
+    tileSum = tileSum + val;
+  }  while (val !== 0);
+  // if there is a tileSum is it a multiple of 5!
   if (tileSum !== 0 && tileSum%5 === 0) {
     displayScore = displayScore + tileSum; //not technically the same thing!
-    document.getElementById('scoredisplay').innerHTML = "Player " + player + " scored " + displayScore;
-    //human
-    if (player === 1) score[player-1] += tileSum;  
-    //computer
+    // human
+    if (player === 1) {
+      score[player-1] += tileSum;  
+    }
+    // computer
     if (player === 2) {  
-
       tempTile.tileValue = computerTileValue;
       tempTile.location  = locus; 
       tempTile.score = tileSum;
@@ -123,47 +120,44 @@ function checkVertical(locus, computerTileValue) {
     return false;
   }
 }
-
+//checks row sums for multiples of 5
 function checkHorizontal(locus, computerTileValue) {
    var tileSum = 0;
    var locusChecker = locus;
    var tempX = parseInt(locusChecker.charAt(1));
    var tempY = parseInt(locusChecker.charAt(0));
-
-   var val = document.getElementById(locusChecker).value;  //jQuery $("[attribute=value]") 
+   // human player
+   var val = document.getElementById(locusChecker).value;
+   // computer checking value
    if (player === 2 ) val = computerTileValue;
+
    tileSum += val;
-  
-   do { //going "left"
-      if (tempX === 0) {
-        break;
-      } else {
-        tempX--;
-      }
+   //going "left"
+   do { 
+      if (tempX === 0) break;
+      tempX--;
       locusChecker = tempY.toString() + tempX.toString();
       val = document.getElementById(locusChecker).value;
       tileSum = tileSum + val;
    }  while (val !== 0 );
-
-   locusChecker = locus; //reseting so I can check in the other direction
+   //reseting so I can check in the other direction
+   locusChecker = locus; 
    tempX = parseInt(locusChecker.charAt(1));
    tempY = parseInt(locusChecker.charAt(0));
    do { //going "right"
-      if (tempX === (numOfCols - 1)) {
-        break;
-      } else {
-        tempX++;
-      }
+      if (tempX === (numOfCols - 1)) break;
+      tempX++;
       locusChecker = tempY.toString() + tempX.toString();
       val = document.getElementById(locusChecker).value;
       tileSum = tileSum + val;
    }  while (val !== 0);
-  
+  // if there is a tileSum is it a multiple of 5!
   if (tileSum !== 0 && tileSum%5 === 0) {
     displayScore = displayScore + tileSum;
-    document.getElementById('scoredisplay').innerHTML = "Player " + player + " scored " + displayScore;
     //human
-    if (player === 1) score[player-1] += tileSum;  
+    if (player === 1) {
+      score[player-1] += tileSum;  
+    }
     //computer
     if (player === 2) {                            
       tempTile.tileValue = computerTileValue;
@@ -179,14 +173,14 @@ function checkHorizontal(locus, computerTileValue) {
 function displayWinner(winner) {
   document.getElementById("player1-tile-row").innerHTML = " ";
   document.getElementById("player2-tile-row").innerHTML = "The winner is " + winner;
-  } 
+} 
 
 function displayTie() {
   document.getElementById("player1-tile-row").innerHTML = " ";
   document.getElementById("player2-tile-row").innerHTML = "Beast mode! Nice battle.";
-  } 
+} 
 
-function checkWinner() { //player already set to player = 2;
+function checkWinner() {
   if (score[0] === score[1]) {
     displayTie();
   } else if (score[0] > score[1]) {
@@ -197,66 +191,67 @@ function checkWinner() { //player already set to player = 2;
 }
 
 function checkGameOver() {
-  makeScoreBoard();  //probably don't need this, can't decide how I will show that it is the computer's turn
+  makeScoreBoard();
+  // $("h1#scoredisplay").delay(2000).;
   nextPlayer();
   makeScoreBoard();
-  if (turns === 0) {
-    checkWinner();
-  }
+  if (turns === 0) checkWinner();
 }
-
+//checking a human placed tile
 function checkTile(locus) {
+  displayScore = 0;
   var vertChk = checkVertical(locus); //consider rewriting so checkVertical and Horizontal are broken up, eliminating the need for these temp variables
   var hortChk = checkHorizontal(locus); 
   if ((!vertChk) && (!hortChk)) {  //if tile doesn't score vertically or horizontally, then player loses points
-    score[player-1] -= document.getElementById(locus).value;
-    document.getElementById('scoredisplay').innerHTML = "Player " + player + " lost " + document.getElementById(locus).value;
+    value = -document.getElementById(locus).value;
+    score[0] += value;
+    displayScore = value;
   }
+  document.getElementById('human').innerHTML = "Player 1: " + displayScore;
+  
   displayScore = 0;
   turns--;
   checkGameOver();
 }
-
-
+//checking all tiles -- computer
 function checkTileInEachSquare(tileValue) {
    for (var i = 0; i < numOfCols; i++) {
      for(var j = 0; j < numOfRows; j++) {
        var computerLocationTest = i.toString() + j.toString();
-
+       //checking for "open squares" to place tiles
        if (document.getElementById(computerLocationTest).value === 0) {
-          var vertChk = checkVertical(computerLocationTest, tileValue); //consider rewriting so checkVertical and Horizontal are broken up, eliminating the need for these temp variables
+          //calculating rows and columns
+          var vertChk = checkVertical(computerLocationTest, tileValue); 
           var hortChk = checkHorizontal(computerLocationTest, tileValue); 
-          if ((!vertChk) && (!hortChk)) {  //if tile doesn't score vertically or horizontally, then player loses points
+          //if tile doesn't score vertically or horizontally, then player loses points
+          if ((!vertChk) && (!hortChk)) {  
               tempTile.tileValue = tileValue;
               tempTile.location  = computerLocationTest;
               tempTile.score     = 0 - tileValue;
           }
+          // looking for the highest tile placement
           if (tempTile.score > highTile.score) {
             highTile.tileValue = tempTile.tileValue;
             highTile.location  = tempTile.location;
             highTile.score     = tempTile.score;
-            console.log("highTile | " + highTile.tileValue + " | " + highTile.location + " | " + highTile.score);
           }
           tempTile.score = 0; // because we add the vertical and horizontal rows
        }
      }
    }
 }
-
+//all the logic for a computer -- need to break up logic
 function computerTurn() {
-    console.log("player: " + player + " | " + playerTiles[player-1]);
-    
+    // initalizing tile placement objects
     highTile = new HighestTile(0, "xx", -10); //lowest possible score is -9
     tempTile = new HighestTile(0, "xx", 0); //reseting each computer turn; 
     for (var i = 0; i < playerTiles[player-1].length; i++) {
-      console.log ("COMPUTER TILE | " + playerTiles[player-1][i])
       checkTileInEachSquare(playerTiles[player-1][i]);
     }
     //updating and showing score
     score[1] += highTile.score;
-    document.getElementById('scoredisplay').innerHTML = "The computer scored " + highTile.score;
+    document.getElementById('computer').innerHTML = "Computer: " + highTile.score;
     //removing tile from DOM
-    
     for (var i = 0; i < numberOfTiles; i++) {
       if (document.getElementById("t1" + i.toString())) element = document.getElementById("t1" + i.toString());
       if (highTile.tileValue === element.value) {
@@ -264,10 +259,9 @@ function computerTurn() {
          break;
       }
     }
-    element.value = 0;
-    
-    //remove tile from player array
-    var ind =  playerTiles[1].indexOf(highTile.tileValue);
+    element.value = 0; //element value will linger otherwise
+    //remove tile from player array of tile values
+    var ind = playerTiles[1].indexOf(highTile.tileValue);
     if (ind != -1) playerTiles[1].splice(ind, 1);
     //changing value of the board (adding tile)
     document.getElementById(highTile.location).value = highTile.tileValue;
@@ -282,31 +276,16 @@ function computerTurn() {
     turns--;
 }
 
-function playerAdvance() {
-   player++;
-   console.log("setTimeOut working");
-}
-
 function nextPlayer() {
-  console.log ("PLAYER | " + player);
-  // setTimeout(function () {
-  //   playerAdvance(player);
-  // }, 2000);
-  playerAdvance();
-  console.log ("PLAYER*** | " + player);
-  if (player === 2) {
-      computerTurn();
-  }
+  player = 2;
+  computerTurn();
   player = 1;
 } 
-
-var tileToBeDeleted = [0 ,0]; //I might not just delete tiles. I might replace.
-
+//setting up board, tiles, etc. -- should have stayed true to this AppController method
 const AppController = {
   // var highlightLocation;not working wanted a variable just for AppController ?? how do I do this
   onClickSquare: function(location) {
-    if (location === "gameBoard") { // working as a protection
-      // document.getElementById(location).innerHTML = location; //comment out
+    if (location === "gameBoard") { 
       return;
     }
     else if (location.charAt(0) === 't') {
@@ -319,14 +298,14 @@ const AppController = {
       AppController.placeTile(location);
     }
   },
-
-  checkIfNewTileBeforePlacing: function() { //this checks to see if a new or different tile is selected by user before placement
+  //this checks to see if a new or different tile is selected by user before placement
+  checkIfNewTileBeforePlacing: function() { 
     var chk = document.getElementById(highlightLocation).style.backgroundColor;
     if (chk === "gold" || chk === "rgb(255, 215, 0)") { //works for safari!!!
       document.getElementById(highlightLocation).style.backgroundColor = rgb(125, 84, 84);
     }
   }, 
-
+  //select a tile from player's tiles
   pickTile: function(p, t) {
     p = parseInt(p);
     t = parseInt(t);
@@ -340,7 +319,7 @@ const AppController = {
       document.getElementById(highlightLocation).style.backgroundColor = "gold";
     }
   },
-
+  //checking logic for tile placement
   placeTile: function(locationTilePlacement) {
     if (document.getElementById(locationTilePlacement).value > 0) {
       alert ("You can't go there!");
@@ -351,22 +330,17 @@ const AppController = {
     checkTile (locationTilePlacement);
 
     squarePlacement = document.getElementById(locationTilePlacement);
-
-    var tileElement = document.createElement('div');  //perhaps change this
-        tileElement.className = 'tileOnBoard';
-        //tileElement.id = (i.toString() + j.toString()); // so that id reflect player1 or 2
-        tileElement.value = currentTileValue;
-        //tileElement.addEventListener('click', pickTile(i, j));
-        squarePlacement.appendChild(tileElement);
-        tileElement.innerHTML = currentTileValue;
     
-    /* if checkTile true */ 
-    // this is what it was-->>document.getElementById(locationTilePlacement).innerHTML = currentTileValue; //only if checkTile true
-    /* if checkTile false */ // document.getElementById(locationTilePlacement).value = 0;
-    currentTileValue = 0;
+    var tileElement = document.createElement('div');  //perhaps change this
+      tileElement.className = 'tileOnBoard';
+      tileElement.value = currentTileValue;
+      squarePlacement.appendChild(tileElement);
+      tileElement.innerHTML = currentTileValue;
+      currentTileValue = 0;
+
     AppController.removeTile();
   },
-
+  //taking tile from the player's tiles
   removeTile: function() {
     //my goodness this is a terrible way of doing .splice
 
@@ -398,15 +372,11 @@ window.onload = function(){
   makeBoard();
   makeTileRow();  //perhaps this should go in makeBoard AND in pick a tile and place a tile
   makeScoreBoard();
-
   document.onclick = function(f) {
   	var targ;    	
-    
-    if (!f) var f = window.event;  //Borrowed from onstack as an onmouseover which I repurposed for 
-    	                               //this onclick functionality with the gameboard and tile rows
   	if (f.target) targ = f.target;
     else if (f.srcElement) targ = f.srcElement;
-    
+
     if (targ.nodeType == 3) // defeat Safari bug
       targ = targ.parentNode;
     AppController.onClickSquare(targ.id);

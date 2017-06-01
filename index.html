@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8"> 
-	<title>Math Scrabble 2</title>
-	<!-- <script type="text/javascript" src="jquery-1.3.2.min.js"> -->
-	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
-	<script type="text/javascript">google.load("jquery", "1.3.2");</script>
- 
-	<link rel="stylesheet" href="main.css">
-</head>
-<body>
-  <h1 id = "scoredisplay">Fünf</h1>
-  <main>
-	  <div class = "boards">
-	  	<div id = "gameBoard"></div>
-	  </div>
-	  
-  <div class="tile-footer">
-  	<div class = "scoreboard">
-	  	<span id = "player1"></span>
-	  	<span id = "player2"></span>
-	</div>
-	<div id = "player-tiles">
-	  	<div id = "player1-tile-row">Player 1</div>
-	  	<div id = "player2-tile-row">Player 2</div>
-	</div>
-  </div>
-  </main>
-<script src='main.js'></script>
-</body>
+	<head>
+		<meta charset="utf-8"> 
+		<title>Math Scrabble 2</title>
+		<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<link rel="stylesheet" href="main.css">
+	</head>
+	<body>
+		<div id="scoredisplay"> 
+			<h5 id="human">Human</h5>
+			<h5 id="computer">Computer</h5>
+		</div>
+		<main>
+			<div class="boards">
+				<div id="gameBoard"></div>
+			</div>
+			<div class="tile-footer">
+				<div class="scoreboard">
+					<span id="player1"></span>
+					<span id="player2"></span>
+				</div>
+				<div id="player-tiles">
+					<div id="player1-tile-row">Player 1</div>
+					<div id="player2-tile-row">Player 2</div>
+				</div>
+			</div>
+		</main>
+		<script src='main.js'></script>
+	</body>
 </html>
