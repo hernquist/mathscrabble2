@@ -178,9 +178,11 @@ function checkHorizontal(locus, computerTileValue) {
 
 
 
-function displayWinner(winner) {
+function displayWinner(player) {
+  var winner = "player 1";
+  if (player === 1) winner = "the computer";
   document.getElementById("player1-tile-row").innerHTML = " ";
-  document.getElementById("player2-tile-row").innerHTML = "The winner is player " + winner;
+  document.getElementById("player2-tile-row").innerHTML = "The winner is " + winner;
   } 
 
 function displayTie() {
@@ -191,23 +193,20 @@ function displayTie() {
 function checkWinner() { //player already set to player = 2;
   if (score[0] === score[1]) {
     displayTie();
-  } else if (score[0] > score [1]) {
+  } else if (score[0] > score[1]) {
     player = 1;
     displayWinner(player);
   } else {
-  displayWinner(player);
+    displayWinner(player);
   }
 }
 
 function checkGameOver() {
+  makeScoreBoard();  //probably don't need this, can't decide how I will show that it is the computer's turn
+  nextPlayer();
+  makeScoreBoard();
   if (turns === 0) {
-    makeScoreBoard();
     checkWinner();
-  }
-  else {
-    makeScoreBoard();  //probably don't need this, can't decide how I will show that it is the computer's turn
-    nextPlayer();
-    makeScoreBoard();
   }
 }
 
@@ -222,6 +221,7 @@ function checkTile(locus) {
   turns--;
   checkGameOver();
 }
+
 
 function checkTileInEachSquare(tileValue) {
    for (var i = 0; i < numOfCols; i++) {
@@ -283,11 +283,13 @@ function computerTurn() {
     tileElement.value = highTile.tileValue;
     squarePlacement.appendChild(tileElement);
     tileElement.innerHTML = highTile.tileValue;
+    //decreasing turns
+    turns--;
 }
 
 function playerAdvance() {
    player++;
-   console.log("setTimeOut working")
+   console.log("setTimeOut working");
 }
 
 function nextPlayer() {
@@ -390,7 +392,9 @@ const AppController = {
     }
     playerTiles = tempPlayerTiles;
     var element = document.getElementById("t" + tileToBeDeleted[0].toString() + tileToBeDeleted[1].toString());
-    element.parentNode.removeChild(element);
+    if (element != null) {
+      element.parentNode.removeChild(element);
+    }
   }
 };
 
